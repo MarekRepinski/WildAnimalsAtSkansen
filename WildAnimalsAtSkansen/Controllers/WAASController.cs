@@ -57,6 +57,7 @@ namespace WildAnimalsAtSkansen.Controllers
             }
             return Ok(atDto);
         }
+
         [HttpGet("Habitat/{id}")]
         public IActionResult GetHabitat(int id)
         {
@@ -66,6 +67,38 @@ namespace WildAnimalsAtSkansen.Controllers
                 return NotFound("Could not find Habitat with ID " + id);
             }
             return Ok(atDto);
+        }
+
+        [HttpPost("")]
+        public IActionResult CreateAnimal([FromBody] CreateAnimalDTO createAnimalDTO)
+        {
+            Animal createdAnimal = _repo.CreateAnimal(createAnimalDTO);
+
+            AnimalDTO aDto = _repo.GetAnimalById(createdAnimal.AnimalId);
+
+            return CreatedAtAction(nameof(GetAnimal), new { name = createdAnimal.AnimalId }, aDto);
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteAnimal(int id)
+        {
+            if (_repo.DeleteAnimalById(id))
+            {
+                return NoContent();
+            }
+            return NotFound("Could not find Animal with ID " + id);
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult UpdateAnimal([FromBody] CreateAnimalDTO animal, int id)
+        {
+            Animal updatedAnimal = _repo.UpdateAnimal(animal, id);
+            if (updatedAnimal is null)
+            {
+                return NotFound("Could not find Animal with ID " + id);
+            }
+            AnimalDTO aDto = _repo.GetAnimalById(id);
+            return Ok(aDto);
         }
     }
 }

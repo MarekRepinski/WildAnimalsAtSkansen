@@ -28,19 +28,50 @@ namespace WildAnimalsAtSkansen.Repo
             return AnimalDTO.GetAnimalNameDTOs(_context, name).ToList();
         }
 
-        public AnimalDTO CreateAnimal(AnimalDTO dto)
+        public Animal CreateAnimal(CreateAnimalDTO dto)
         {
-            throw new NotImplementedException();
+            Animal animal = new Animal();
+            animal.AnimalTypeId = dto.AnimalTypeId;
+            animal.HabitatId = dto.HabitatId;
+            animal.Name = dto.Name;
+            animal.LatinName = dto.LatinName;
+            animal.FamilyName = dto.FamilyName;
+            animal.AgeExpectancyYears = dto.AgeExpectancyYears;
+            animal.Description = dto.Description;
+
+            _context.Animal.Add(animal);
+            _context.SaveChanges();
+
+            return animal;
         }
 
-        public AnimalDTO UpdateAnimal(AnimalDTO dto)
+        public Animal UpdateAnimal(CreateAnimalDTO animal, int id)
         {
-            throw new NotImplementedException();
+            Animal existingAnimal = _context.Animal.SingleOrDefault(x => x.AnimalId == id);
+            if (existingAnimal is not null)
+            {
+                existingAnimal.AnimalTypeId = animal.AnimalTypeId;
+                existingAnimal.HabitatId = animal.HabitatId;
+                existingAnimal.Name = animal.Name;
+                existingAnimal.LatinName = animal.LatinName;
+                existingAnimal.FamilyName = animal.FamilyName;
+                existingAnimal.AgeExpectancyYears = animal.AgeExpectancyYears;
+                existingAnimal.Description = animal.Description;
+                _context.SaveChanges(true);
+            }
+            return existingAnimal;
         }
 
-        public void DeleteAnimalById(int id)
+        public bool DeleteAnimalById(int id)
         {
-            throw new NotImplementedException();
+            Animal animal = _context.Animal.SingleOrDefault(x => x.AnimalId == id);
+            if (animal is null)
+            {
+                return false;
+            }
+            _context.Animal.Remove(animal);
+            _context.SaveChanges(true);
+            return true;
         }
 
         public List<AnimalDTO> GetHabitatAnimalsById(int id)
@@ -64,6 +95,5 @@ namespace WildAnimalsAtSkansen.Repo
                 .ToList()
                 .MapToAnimalDTOs();
         }
-
     }
 }

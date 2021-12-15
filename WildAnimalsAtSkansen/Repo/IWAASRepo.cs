@@ -9,9 +9,9 @@ namespace WildAnimalsAtSkansen.Repo
         AnimalDTO GetAnimalById(int id);
         List<AnimalDTO> GetAnimalByName(string name);
         
-        AnimalDTO CreateAnimal(AnimalDTO dto);
-        AnimalDTO UpdateAnimal(AnimalDTO dto);
-        void DeleteAnimalById(int id);
+        Animal CreateAnimal(CreateAnimalDTO createAnimalDTO);
+        Animal UpdateAnimal(CreateAnimalDTO animal, int id);
+        bool DeleteAnimalById(int id);
         List<AnimalDTO> GetHabitatAnimalsById(int id);
         List<AnimalDTO> GetAnimalTypeAnimalsById(int id);
     }
