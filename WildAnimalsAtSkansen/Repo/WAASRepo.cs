@@ -20,7 +20,9 @@ namespace WildAnimalsAtSkansen.Repo
 
         public AnimalDTO GetAnimalById(int id)
         {
-            return AnimalDTO.GetAnimalDTO(_context, id).ToList()[0];
+            List<AnimalDTO> resp = AnimalDTO.GetAnimalDTO(_context, id).ToList();
+            if (resp.Count == 0) { return null; }
+            return resp[0];
         }
 
         public List<AnimalDTO> GetAnimalByName(string name)

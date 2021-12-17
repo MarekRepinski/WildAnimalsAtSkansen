@@ -40,7 +40,7 @@ namespace WildAnimalsAtSkansen.Controllers
                 return Ok(aDto);
             }
             List<AnimalDTO> aDtos = _repo.GetAnimalByName(name);
-            if (aDtos is null)
+            if (aDtos.Count == 0)
             {
                 return NotFound("Could not find Animals with name of " + name);
             }
